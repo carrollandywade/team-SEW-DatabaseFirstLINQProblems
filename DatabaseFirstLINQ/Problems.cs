@@ -389,7 +389,7 @@ namespace DatabaseFirstLINQ
                             var allItems = _context.ShoppingCarts.Include(ai => ai.User).Include(ai => ai.Product).Where(ai => ai.User.Email == email);
                             foreach (ShoppingCart item in allItems)
                             {
-                                Console.WriteLine($"Prouduct Name: {item.Product.Name} Price: {item.Product.Price} Quantity: {item.Quantity}");
+                                Console.WriteLine($"Product Name: {item.Product.Name} Price: {item.Product.Price} Quantity: {item.Quantity}");
                             }
                             break;
                         case "2":
@@ -403,12 +403,10 @@ namespace DatabaseFirstLINQ
                             var displayProducts = _context.Products;
                             foreach (Product product in displayProducts)
                             {
-                                Console.WriteLine($"{product.Id} - ${product.Name}");
+                                Console.WriteLine($"{product.Id} - {product.Name}");
                             }
                             Console.WriteLine("Pick number of item to add to cart");
-                            int productSelection = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Type Quantity");
-                            int qtySelection = Convert.ToInt32(Console.ReadLine());
+                            int productSelection = Convert.ToInt32(Console.ReadLine());                          
 
                             var userId = _context.Users.Where(u => u.Email == email).Select(u => u.Id).SingleOrDefault();
                             var productId = _context.Products.Where(pr => pr.Id == productSelection).Select(pr => pr.Id).SingleOrDefault();
@@ -417,9 +415,21 @@ namespace DatabaseFirstLINQ
                             {
                                 UserId = userId,
                                 ProductId = productId,
-                                Quantity = qtySelection,
+                                Quantity = 1,
                             };
                             _context.ShoppingCarts.Add(newItem);
+                            _context.SaveChanges();
+                            break;
+                        case "4":
+                            var viewCart = _context.ShoppingCarts.Include(ai => ai.User).Include(ai => ai.Product).Where(ai => ai.User.Email == email);
+                            foreach (ShoppingCart item in viewCart)
+                            {
+                                Console.WriteLine($"Product ID: {item.Product.Id} - Product Name: {item.Product.Name} Price: {item.Product.Price} Quantity: {item.Quantity}");
+                            }
+                            Console.WriteLine("Choose item number to remove.");
+                            var deleteSelection = Convert.ToInt32(Console.ReadLine());
+                            var deleteProduct = _context.ShoppingCarts.Where(dp => dp.ProductId == deleteSelection).SingleOrDefault();
+                            _context.ShoppingCarts.Remove(deleteProduct);
                             _context.SaveChanges();
                             break;
                     }
