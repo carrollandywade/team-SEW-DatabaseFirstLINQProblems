@@ -36,7 +36,8 @@ namespace DatabaseFirstLINQ
             //ProblemNineteen();
             //ProblemTwenty();
             //BonusOne();
-            BonusTwo();
+            //BonusTwo();
+            BonusThree();
         }
 
         // <><><><><><><><> R Actions (Read) <><><><><><><><><>
@@ -352,19 +353,64 @@ namespace DatabaseFirstLINQ
         private void BonusThree()
         {
             // 1. Create functionality for a user to sign in via the console
-            // 2. If the user succesfully signs in
-            // a. Give them a menu where they perform the following actions within the console
-            // View the products in their shopping cart
-            // View all products in the Products table
-            // Add a product to the shopping cart (incrementing quantity if that product is already in their shopping cart)
-            // Remove a product from their shopping cart
             // 3. If the user does not succesfully sing in
             // a. Display "Invalid Email or Password"
             // b. Re-prompt the user for credentials
 
+            bool checkDb = false;
+            while (checkDb == false)
+            {
+                Console.WriteLine("Enter your email:");
+                var email = Console.ReadLine();
+                Console.WriteLine("Enter your password:");
+                string password = Console.ReadLine();                
+                var everyUser = _context.Users;
+
+                foreach (User user in everyUser)
+                {
+                    if (user.Email == email && user.Password == password)
+                    {
+                        checkDb = true;
+                    }
+                }
+                if (checkDb)
+                {
+                    Console.WriteLine("You are now signed in!");
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Wrong Email or Password");
+                }
+            }
+            // 2. If the user succesfully signs in
+            // a. Give them a menu where they perform the following actions within the console       
+            // View the products in their shopping cart
+            // View all products in the Products table
+            // Add a product to the shopping cart (incrementing quantity if that product is already in their shopping cart)
+            // Remove a product from their shopping cart
+            Console.WriteLine("Menu: Choose number of the option you want.");
+            Console.WriteLine("1 - View products in your shopping cart.");
+            Console.WriteLine("2 - View all products for sale.");
+            Console.WriteLine("3 - Add a product to the shopping cart.");
+            Console.WriteLine("4 - Remove product from shopping cart.");
+            //var userSelection = Console.ReadLine();
+
+            //switch (userSelection)
+            //{
+            //    case "1":
+            //        var allItems = _context.ShoppingCarts.Include(ai => ai.User).Include(ai => ai.Product).Where(ai => ai.User.Email == );
+            //        foreach (ShoppingCart item in allItems)
+            //        {
+            //            Console.WriteLine($"Prouduct Name: {item.Product.Name} Price: {item.Product.Price} Quantity: {item.Quantity}");
+            //        }
+            //        break;
+            }
+            
         }
 
     }
-}
+
+
 
 
