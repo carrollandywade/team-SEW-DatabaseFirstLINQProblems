@@ -186,7 +186,7 @@ namespace DatabaseFirstLINQ
             Product newProduct = new Product()
             {
                 Name = "Car",
-                Description = "20g21 Mustang Convertible",
+                Description = "2021 Mustang Convertible",
                 Price = 35000
             };
             _context.Products.Add(newProduct);
@@ -394,11 +394,33 @@ namespace DatabaseFirstLINQ
                             break;
                         case "2":
                             var products = _context.Products;
-
                             foreach (Product product in products)
                             {
                                 Console.WriteLine(product.Name);
                             }
+                            break;
+                        case "3":
+                            var displayProducts = _context.Products;
+                            foreach (Product product in displayProducts)
+                            {
+                                Console.WriteLine($"{product.Id} - ${product.Name}");
+                            }
+                            Console.WriteLine("Pick number of item to add to cart");
+                            int productSelection = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Type Quantity");
+                            int qtySelection = Convert.ToInt32(Console.ReadLine());
+
+                            var userId = _context.Users.Where(u => u.Email == email).Select(u => u.Id).SingleOrDefault();
+                            var productId = _context.Products.Where(pr => pr.Id == productSelection).Select(pr => pr.Id).SingleOrDefault();
+
+                            ShoppingCart newItem = new ShoppingCart()
+                            {
+                                UserId = userId,
+                                ProductId = productId,
+                                Quantity = qtySelection,
+                            };
+                            _context.ShoppingCarts.Add(newItem);
+                            _context.SaveChanges();
                             break;
                     }
                         
