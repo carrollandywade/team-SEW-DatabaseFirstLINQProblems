@@ -392,8 +392,16 @@ namespace DatabaseFirstLINQ
                                 Console.WriteLine($"Prouduct Name: {item.Product.Name} Price: {item.Product.Price} Quantity: {item.Quantity}");
                             }
                             break;
-                    }
+                        case "2":
+                            var products = _context.Products;
 
+                            foreach (Product product in products)
+                            {
+                                Console.WriteLine(product.Name);
+                            }
+                            break;
+                    }
+                        
                 }
                 else
                 {
