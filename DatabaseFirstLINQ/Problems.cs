@@ -23,8 +23,8 @@ namespace DatabaseFirstLINQ
             //ProblemSix();
             //ProblemSeven();
             //ProblemEight();
-            //ProblemNine();
-            ProblemTen();
+            ProblemNine();
+            //ProblemTen();
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
@@ -183,7 +183,7 @@ namespace DatabaseFirstLINQ
             Product newProduct = new Product()
             {
                 Name = "Car",
-                Description = "2021 Mustang Convertible",
+                Description = "20g21 Mustang Convertible",
                 Price = 35000
             };
             _context.Products.Add(newProduct);
@@ -303,3 +303,4 @@ namespace DatabaseFirstLINQ
 
     }
 }
+
