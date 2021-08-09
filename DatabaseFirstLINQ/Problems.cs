@@ -22,9 +22,9 @@ namespace DatabaseFirstLINQ
             //ProblemFive();
             //ProblemSix();
             //ProblemSeven();
-            ProblemEight();
+            //ProblemEight();
             //ProblemNine();
-            //ProblemTen();
+            ProblemTen();
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
@@ -144,8 +144,7 @@ namespace DatabaseFirstLINQ
             // HINT: End of query will be: .Select(sc => sc.Product.Price).Sum();
             // Then print the total of the shopping cart to the console.
             var odaCost = _context.ShoppingCarts.Include(oc => oc.User).Include(oc => oc.Product).Where(oc => oc.User.Email == "oda@gmail.com")
-                .Select(oc =>oc.Product.Price).Sum();
-
+                .Select(oc => oc.Product.Price).Sum();
             Console.WriteLine("$" + odaCost);
 
         }
@@ -156,19 +155,17 @@ namespace DatabaseFirstLINQ
             // Then print the user's email as well as the product's name, price, and quantity to the console.
             var employeeProducts = _context.UserRoles.Where(ep => ep.Role.RoleName == "Employee").Select(ep => ep.UserId);
             var shoppingCart = _context.ShoppingCarts.Include(sc => sc.User).Include(sc => sc.Product).Where(sc => employeeProducts.Contains(sc.UserId));
-        
+
             foreach (ShoppingCart cart in shoppingCart)
             {
                 Console.WriteLine($"Email: {cart.User.Email} Product Name: {cart.Product.Name} Product Price: {cart.Product.Price} Quantity: {cart.Quantity}");
-               
             }
         }
+            // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
 
-        // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
+            // <><> C Actions (Create) <><>
 
-        // <><> C Actions (Create) <><>
-
-        private void ProblemEleven()
+            private void ProblemEleven()
         {
             // Create a new User object and add that user to the Users table using LINQ.
             User newUser = new User()
