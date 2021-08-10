@@ -318,7 +318,7 @@ namespace DatabaseFirstLINQ
             }
             else
             {
-                Console.WriteLine("Wrong Email or Password");
+                Console.WriteLine("Invalid Email or Password");
             }
         }
 
@@ -353,9 +353,7 @@ namespace DatabaseFirstLINQ
         private void BonusThree()
         {
             // 1. Create functionality for a user to sign in via the console
-            // 3. If the user does not succesfully sing in
-            // a. Display "Invalid Email or Password"
-            // b. Re-prompt the user for credentials
+            
 
             bool checkDb = false;
             while (checkDb == false)
@@ -374,6 +372,8 @@ namespace DatabaseFirstLINQ
                     }
                 }
                 if (checkDb)
+                // 2. If the user succesfully signs in
+                // a. Give them a menu where they perform the following actions within the console       
                 {
                     Console.WriteLine("You are now signed in!");
                     Console.WriteLine("Menu: Choose number of the option you want.");
@@ -381,25 +381,32 @@ namespace DatabaseFirstLINQ
                     Console.WriteLine("2 - View all products for sale.");
                     Console.WriteLine("3 - Add a product to the shopping cart.");
                     Console.WriteLine("4 - Remove product from shopping cart.");
+                    Console.WriteLine("5 - Logout.");
                     var userSelection = Console.ReadLine();
 
                     switch (userSelection)
                     {
                         case "1":
+                            // View the products in their shopping cart
                             var allItems = _context.ShoppingCarts.Include(ai => ai.User).Include(ai => ai.Product).Where(ai => ai.User.Email == email);
                             foreach (ShoppingCart item in allItems)
                             {
                                 Console.WriteLine($"Product Name: {item.Product.Name} Price: {item.Product.Price} Quantity: {item.Quantity}");
                             }
+                            BonusThree();
                             break;
                         case "2":
+                            // View all products in the Products table
                             var products = _context.Products;
                             foreach (Product product in products)
                             {
                                 Console.WriteLine(product.Name);
                             }
+                            BonusThree();
                             break;
                         case "3":
+                            // Add a product to the shopping cart (incrementing quantity if that product is already in their shopping cart) 
+                            // Only works for new items not previously in cart.
                             var displayProducts = _context.Products;
                             foreach (Product product in displayProducts)
                             {
@@ -419,8 +426,11 @@ namespace DatabaseFirstLINQ
                             };
                             _context.ShoppingCarts.Add(newItem);
                             _context.SaveChanges();
+                            BonusThree();
                             break;
                         case "4":
+                            // Remove a product from their shopping cart
+
                             var viewCart = _context.ShoppingCarts.Include(ai => ai.User).Include(ai => ai.Product).Where(ai => ai.User.Email == email);
                             foreach (ShoppingCart item in viewCart)
                             {
@@ -431,22 +441,25 @@ namespace DatabaseFirstLINQ
                             var deleteProduct = _context.ShoppingCarts.Where(dp => dp.ProductId == deleteSelection).SingleOrDefault();
                             _context.ShoppingCarts.Remove(deleteProduct);
                             _context.SaveChanges();
+                            BonusThree();
+                            break;
+                        case "5":
+                            Console.WriteLine("Goodbye!");
+                            checkDb = false;
                             break;
                     }
                         
                 }
                 else
+                // 3. If the user does not succesfully sign in
+                // a. Display "Invalid Email or Password"
+                // b. Re-prompt the user for credentials
                 {
-                    Console.WriteLine("Wrong Email or Password");
+                    Console.WriteLine("Invalid Email or Password");
                 }
-            }
-            // 2. If the user succesfully signs in
-            // a. Give them a menu where they perform the following actions within the console       
-            // View the products in their shopping cart
-            // View all products in the Products table
-            // Add a product to the shopping cart (incrementing quantity if that product is already in their shopping cart)
-            // Remove a product from their shopping cart
-
+            }        
+          
+           
 
         }
 
