@@ -375,6 +375,7 @@ namespace DatabaseFirstLINQ
                 // 2. If the user succesfully signs in
                 // a. Give them a menu where they perform the following actions within the console       
                 {
+                
                     Console.WriteLine("You are now signed in!");
                     Console.WriteLine("Menu: Choose number of the option you want.");
                     Console.WriteLine("1 - View products in your shopping cart.");
@@ -405,28 +406,39 @@ namespace DatabaseFirstLINQ
                             BonusThree();
                             break;
                         case "3":
-                            // Add a product to the shopping cart (incrementing quantity if that product is already in their shopping cart) 
-                            // Only works for new items not previously in cart.
+                            // Add a product to the shopping cart (incrementing quantity if that product is already in their shopping cart)                           
                             var displayProducts = _context.Products;
                             foreach (Product product in displayProducts)
                             {
                                 Console.WriteLine($"{product.Id} - {product.Name}");
                             }
                             Console.WriteLine("Pick number of item to add to cart");
-                            int productSelection = Convert.ToInt32(Console.ReadLine());                          
+                            int productSelection = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter quantity for item");
+                            int productQty = Convert.ToInt32(Console.ReadLine());
+
 
                             var userId = _context.Users.Where(u => u.Email == email).Select(u => u.Id).SingleOrDefault();
                             var productId = _context.Products.Where(pr => pr.Id == productSelection).Select(pr => pr.Id).SingleOrDefault();
-
+                           
                             ShoppingCart newItem = new ShoppingCart()
                             {
                                 UserId = userId,
                                 ProductId = productId,
-                                Quantity = 1,
+                                Quantity = productQty++,
                             };
-                            _context.ShoppingCarts.Add(newItem);
-                            _context.SaveChanges();
-                            BonusThree();
+                            try
+                            {
+                                _context.ShoppingCarts.Add(newItem);
+                                _context.SaveChanges();
+                                BonusThree();
+                            }
+                            catch
+                            {
+                                _context.ShoppingCarts.Update(newItem);
+                                _context.SaveChanges();
+                                BonusThree();
+                            }
                             break;
                         case "4":
                             // Remove a product from their shopping cart
@@ -444,8 +456,7 @@ namespace DatabaseFirstLINQ
                             BonusThree();
                             break;
                         case "5":
-                            Console.WriteLine("Goodbye!");
-                            checkDb = false;
+                            Console.WriteLine("Goodbye!");                            
                             break;
                     }
                         
